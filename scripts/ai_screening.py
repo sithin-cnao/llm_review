@@ -10,24 +10,26 @@ from pydantic import BaseModel, Field
 
 class OutputSchema(BaseModel):
     thoughts: str = Field(description= "thoughts of the model")
-    decision: int = Field(description="1 if the abstract was selected, 0 otherwise")
+    decision: int = Field(description="1 if the abstract is selected, 0 otherwise")
     reason: str = Field(description = "generate a consise one sentence long reason for the decision")
 
 
 def main():
 
-  llm = ChatOllama(model="deepseek-r1:32b", temperature=0.0)
+  llm = ChatOllama(model="deepseek-r1:32b", temperature=0.0, num_ctx=5_000)
   
   struct_llm = llm.with_structured_output(OutputSchema)
   
-  df = pd.read_csv(os.path.join("..", "notebooks/articles.csv"))[["key", "title", "abstract"]]
+  df = pd.read_csv(os.path.join("..", "dataset/screening/articles_to_screen.csv"))[["key", "title", "abstract"]]
+  out_dir = "results"
+  if not os.path.exists(out_dir):
+     os.makedirs(out_dir)
   
   messages = [
-    ('system',  "You are a helpful AI agent that assists in accurately screening the article using its abstract. " 
-                "Based solely on the abstract provided, determine whether the article discusses an APPLICATION OF AI METHODS IN CARBON ION THERAPY? "
-                "Your decision should be '0' for NO or '1' for YES. Then, generate a concise, one-sentence reason for your decision."
+    ('system',  "You are a helpful AI assistant that accurately screens and SELECTS articles relevant to given TOPIC, for inclusion in a literature review, based solely on their ABSTRACT. " 
+                "Your decision should be '1' for YES or '0' otherwise. Then, generate a concise, one-sentence reason for your decision."
     ),
-    ('human', "abstract:\n\n title: {title}, \n content: {abstract}")
+    ('human', "TOPIC: APPLICATIONS OF AI METHODS IN CARBON ION THERAPY\n\nABSTRACT:\n\n title: {title}, \n content: {abstract}")
   ]
 
   prompt_template = ChatPromptTemplate.from_messages(messages)
@@ -48,7 +50,7 @@ def main():
           decision_df[key].append(val)
   
   decision_df = pd.DataFrame(decision_df)
-  decision_df.to_csv("ai_screening_outputs_final.csv", index=False)
+  decision_df.to_csv(os.path.join(out_dir, "ai_decision.csv"), index=False)
   
 if __name__=="__main__":
   main()
