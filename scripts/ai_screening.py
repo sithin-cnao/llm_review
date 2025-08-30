@@ -28,6 +28,7 @@ def main():
   messages = [
     ('system',  "You are a helpful AI assistant that accurately screens and SELECTS articles relevant to given TOPIC, for inclusion in a literature review, based solely on their ABSTRACT. " 
                 "Your decision should be '1' for YES or '0' otherwise. Then, generate a concise, one-sentence reason for your decision."
+                "NOTE: DONOT SELECT non-original research articles, such as reviews"
     ),
     ('human', "TOPIC: APPLICATIONS OF AI METHODS IN CARBON ION THERAPY\n\nABSTRACT:\n\n title: {title}, \n content: {abstract}")
   ]
