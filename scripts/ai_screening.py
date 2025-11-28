@@ -11,7 +11,7 @@ from typing import Literal, List, Optional
 
 class OutputSchema(BaseModel):
     thoughts: str = Field(description= "thoughts of the model")
-    decision: int = Field(description="1 if the article is SELECTED as it falls with the scope of the REVIEW_TOPIC, 0 otherwise")
+    decision: int = Field(description="1 if the article is SELECTED, 0 otherwise")
     reason: str = Field(description = "generate a consise one sentence long reason for the decision")
     ai_method_list: Optional[List[str]] = Field(default=None, description="list all the AI method explored in the article")
 
@@ -28,12 +28,13 @@ def main():
      os.makedirs(out_dir)
   
   messages = [
-    ('system',  "You are a helpful AI reviewer that ACCURATELY SCREENS and SELECTS 'ORIGINAL RESEARCH ARTICLES' that falls within the scope of the given 'LITERATURE_REVIEW_TOPIC', based on their ABSTRACT." 
+    ('system',  "You are a helpful AI reviewer that ACCURATELY SCREENS and SELECTS 'ORIGINAL RESEARCH ARTICLES' that falls within the scope of the given 'TOPIC', based on their ABSTRACT." 
                 "Your decision should be '1' if SELECTED or '0' otherwise."
                 "Generate a concise, one-sentence reason to motivate your decision."
                 "If selected, list all the AI methods explored in the ORIGINAL RESEARCH ARTICLE."
+                "**Note: ORIGINAL RESEARCH ARTICLES do NOT include REVIEW ARTICLES. Be precise and objective in your evaluation.**"
     ),
-    ('human', "ABSTRACT:\n\n title: {title}, \n content: {abstract}\n\n LITERATURE_REVIEW_TOPIC: APPLICATIONS OF AI IN CARBON ION THERAPY")
+    ('human', "ABSTRACT:\n\n title: {title}, \n content: {abstract}\n\n TOPIC: APPLICATIONS OF AI IN CARBON ION THERAPY")
   ]
 
   prompt_template = ChatPromptTemplate.from_messages(messages)
