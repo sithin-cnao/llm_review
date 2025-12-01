@@ -13,6 +13,10 @@ TBA
 * Visualizations
 * Jupyter notebooks with usage examples
 
+```bibtex
+Note: We used DeepSeek-R1:32B for all our analysis. Ollama was used to run the LLM locally.
+```
+
 #### **Contents:**
 ```
 llm_review
