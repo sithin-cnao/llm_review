@@ -25,7 +25,6 @@ llm_review
 │    └── analysis.ipynb                #----Jupyter notebook for visualization and agreement analysis
 │    └── results                       #---- directory containing the results of this scoping review
 │    └── figures                       #---- directory containing trend and wordcloud plots
-├── LICENCE                            # MIT License
 ├── README.md
 
 ```
