@@ -1,5 +1,5 @@
 # The landscape of artificial intelligence in carbon ion radiotherapy: a scoping review
-Repository supporting the article submitted to the British Journal of Radiology (BJR)
+Repository supporting the article submitted to La Radiologia Medica
 
 If you use this codebase for your research, please cite our paper if available; otherwise, please cite this repository:
 ```bibtex
